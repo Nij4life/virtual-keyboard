@@ -1,0 +1,72 @@
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  box-shadow: none !important;
+}
+.keyboard--item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-width: 40px;
+  min-height: 40px;
+  margin-top: 5px;
+  padding: 5px;
+  color: #ffffff;
+  background: #1c232e;
+  border-radius: 5px;
+  text-align: center;
+  user-select: none;
+}
+.keyboard--item:nth-child(14) {
+  width: 100px;
+}
+.keyboard--item:nth-child(15), .keyboard--item:nth-child(28) {
+  width: 60px;
+}
+.keyboard--item:nth-child(29), .keyboard--item:nth-child(41) {
+  width: 100px;
+}
+.keyboard--item:nth-child(42) {
+  width: 140px;
+}
+.keyboard--item:nth-child(53), .keyboard--item:nth-child(61) {
+  transform: rotate(90deg);
+}
+.keyboard--item:nth-child(55) {
+  width: 100px;
+}
+.keyboard--item:nth-child(57) {
+  width: 350px;
+}
+
+.active {
+  color: red;
+  box-shadow: 0 0 5px 1px red;
+  transition-delay: 0.05s;
+}
+
+body {
+  background: #eeeeee;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+/*# sourceMappingURL=style.css.map */
