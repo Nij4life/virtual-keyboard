@@ -37,7 +37,7 @@ class Keyboard {
         this.keyboard.querySelectorAll('[data-keycode]')
             .forEach(cell => {
                 cell.textContent = languages[this.lang][cell.dataset.keycode];
-        });
+            });
     }
 
     _toggleActiveClass(e) {
@@ -50,21 +50,32 @@ class Keyboard {
     }
 
     _useStorage() {
-        if ( sessionStorage.getItem('lang') ) {
+        if (sessionStorage.getItem('lang')) {
             this.lang = sessionStorage.getItem('lang');
+        }
+    }
+
+    _lettersUp() {
+        const elems = this.keyboard.querySelectorAll('.keyboard--item');
+        for (let x of elems) {
+            if (/^Key/.test(x.dataset.keycode)) x.textContent = x.textContent.toUpperCase();
+        }
+    }
+
+    _lettersDown() {
+        const elems = this.keyboard.querySelectorAll('.keyboard--item');
+        for (let x of elems) {
+            if (/^Key/.test(x.dataset.keycode)) x.textContent = x.textContent.toLowerCase();
         }
     }
 
     _useShift() {
         const entries = Object.entries(signs[this.lang]);
-        entries.forEach( (el) => {
+        entries.forEach((el) => {
             this.keyboard.querySelector(`[data-keycode="${el[0]}"]`).textContent = el[1];
         });
 
-        const elems = this.keyboard.querySelectorAll('.keyboard--item');
-        for (let x of elems) {
-           if (/^Key/.test(x.dataset.keycode)) x.textContent = x.textContent.toUpperCase();
-        }
+        this._lettersUp();
     }
 
     listeners() {
@@ -79,6 +90,12 @@ class Keyboard {
             if (e.code === 'CapsLock') {
                 this.capsLock = (this.capsLock === true) ? false : true;
                 this.keyboard.querySelector(`[data-keycode=${e.code}]`).classList.toggle('active');
+                if (this.capsLock) {
+                    this._lettersUp();
+                } else {
+                    this._lettersDown();
+                }
+
             } else if (this.keyboard.querySelector(`[data-keycode=${e.code}]`)) {
                 this.keyboard.querySelector(`[data-keycode=${e.code}]`).classList.add('active');
             }
@@ -89,11 +106,11 @@ class Keyboard {
             }
 
             if (e.code === 'AltRight' || e.code === 'AltLeft') {
-               if (e.shiftKey) {
-                   this.changeLang();
-               } else {
-                e.preventDefault();
-               }
+                if (e.shiftKey) {
+                    this.changeLang();
+                } else {
+                    e.preventDefault();
+                }
             }
 
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
@@ -109,7 +126,7 @@ class Keyboard {
             }
 
             if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
-               this.fill();
+                this.fill();
             }
         });
     }
@@ -133,7 +150,7 @@ class Keyboard {
                     }
                 }
                 // speсial keys
-                if (/^Shift/.test(keycode) ) {
+                if (/^Shift/.test(keycode)) {
                     this._useShift();
                 } else if (/^Tab$/.test(keycode)) {
                     this.textarea.value += '    ';
@@ -145,6 +162,11 @@ class Keyboard {
                     this.textarea.value = this.textarea.value.slice(0, -1);
                 } else if (/^CapsLock$/.test(keycode)) {
                     this.capsLock = this.capsLock ? false : true;
+                    if (this.capsLock) {
+                        this._lettersUp();
+                    } else {
+                        this._lettersDown();
+                    }
                 }
             }
         });
@@ -152,6 +174,11 @@ class Keyboard {
         this.keyboard.addEventListener('mouseup', (e) => {
             // if no caps lock that change class .active
             if (/^CapsLock$/.test(e.target.dataset.keycode)) return;
+
+            if (/^Shift/.test(e.target.dataset.keycode) ) {
+                this._lettersDown();
+                this.fill();
+            }
 
             this._toggleActiveClass(e);
         });
