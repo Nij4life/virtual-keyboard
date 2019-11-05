@@ -13,18 +13,28 @@ class Keyboard {
     }
 
     initialize() {
-        const ul = document.createElement('ul');
-        ul.classList.add('keyboard');
+        const wrap = document.createElement('div');
+        wrap.classList.add('keyboard');
         const arr = Object.entries(languages[this.lang]);
+        let row = document.createElement('div');
+        row.classList.add('keyboard--row');
+        wrap.append(row);
+        let i = 0;
 
-        for (let cell of arr) {
-            const li = document.createElement('li');
-            li.classList.add('keyboard--item');
-            li.setAttribute('data-Keycode', `${cell[0]}`);
-            li.textContent = `${cell[1]}`;
-            ul.append(li);
+        for(let cell of arr) {
+            if (i === 14 || i === 28 || i === 41 ||  i === 54) {
+                row = document.createElement('div');
+                row.classList.add('keyboard--row');
+                wrap.append(row);
+            }
+            const span = document.createElement('span');
+            span.classList.add('keyboard--item');
+            span.setAttribute('data-Keycode', `${cell[0]}`);
+            span.textContent = `${cell[1]}`;
+            row.append(span);
+            i++;
         }
-        return ul;
+        return wrap;
     }
 
     changeLang() {
@@ -41,12 +51,15 @@ class Keyboard {
     }
 
     _toggleActiveClass(e) {
-        const keycode = e.target.dataset.keycode;
-        if (/^CapsLock$/.test(keycode) && this.capsLock) {
-            e.target.classList.toggle('active');
-        } else {
-            e.target.classList.toggle('active');
+        if (e.target.classList.contains('keyboard--item')) {
+            const keycode = e.target.dataset.keycode;
+            if (/^CapsLock$/.test(keycode) && this.capsLock) {
+                e.target.classList.toggle('active');
+            } else {
+                e.target.classList.toggle('active');
+            }
         }
+
     }
 
     _useStorage() {
@@ -101,7 +114,10 @@ class Keyboard {
             }
 
             if (e.code === 'Tab') {
-                this.textarea.value += '    ';
+                let indexСarriage = this.textarea.selectionStart;
+                let text = this.textarea.value;
+                this.textarea.value = [...text.slice(0, indexСarriage), '    ', ...text.slice(indexСarriage)].join('');
+                this.textarea.selectionEnd = indexСarriage + 4;
                 e.preventDefault();
             }
 
@@ -131,12 +147,12 @@ class Keyboard {
         });
     }
 
-
-
     listenVirtual() {
         this.keyboard.addEventListener('mousedown', (e) => {
             let key = e.target.textContent;
             const keycode = e.target.dataset.keycode;
+            let indexСarriage = this.textarea.selectionStart;
+            let text = this.textarea.value;
 
             this._toggleActiveClass(e);
 
@@ -144,22 +160,28 @@ class Keyboard {
                 // letter and digit
                 if (key.length < 2) {
                     if (e.shiftKey || this.capsLock) {
-                        this.textarea.value += key;
+                        this.textarea.value = [...text.slice(0, indexСarriage), key, ...text.slice(indexСarriage)].join('');
+                        this.textarea.selectionEnd = ++indexСarriage;
                     } else {
-                        this.textarea.value += (key).toLowerCase();
+                        this.textarea.value = [...text.slice(0, indexСarriage), key.toLowerCase(), ...text.slice(indexСarriage)].join('');
+                        this.textarea.selectionEnd = ++indexСarriage;
                     }
                 }
                 // speсial keys
                 if (/^Shift/.test(keycode)) {
                     this._useShift();
                 } else if (/^Tab$/.test(keycode)) {
-                    this.textarea.value += '    ';
+                    this.textarea.value = [...text.slice(0, indexСarriage), '    ', ...text.slice(indexСarriage)].join('');
+                    this.textarea.selectionEnd = indexСarriage + 4;
                 } else if (/^Space$/.test(keycode)) {
-                    this.textarea.value += ' ';
+                    this.textarea.value = [...text.slice(0, indexСarriage), ' ', ...text.slice(indexСarriage)].join('');
+                    this.textarea.selectionEnd = ++indexСarriage;
                 } else if (/^Enter$/.test(keycode)) {
-                    this.textarea.value += '\n';
+                    this.textarea.value = [...text.slice(0, indexСarriage), '\n', ...text.slice(indexСarriage)].join('');
+                    this.textarea.selectionEnd = ++indexСarriage;
                 } else if (/^Backspace$/.test(keycode)) {
-                    this.textarea.value = this.textarea.value.slice(0, -1);
+                    this.textarea.value = [...text.slice(0, indexСarriage-1), ...text.slice(indexСarriage)].join('');
+                    this.textarea.selectionEnd = --indexСarriage;
                 } else if (/^CapsLock$/.test(keycode)) {
                     this.capsLock = this.capsLock ? false : true;
                     if (this.capsLock) {
@@ -175,14 +197,17 @@ class Keyboard {
             // if no caps lock that change class .active
             if (/^CapsLock$/.test(e.target.dataset.keycode)) return;
 
-            if (/^Shift/.test(e.target.dataset.keycode) ) {
+            if (/^Shift/.test(e.target.dataset.keycode)) {
                 this._lettersDown();
                 this.fill();
             }
 
             this._toggleActiveClass(e);
+            this.textarea.focus();
         });
     }
 }
+
+
 
 export default Keyboard;
