@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .keyboard {
   max-width: 820px;
   margin: 0 auto;
@@ -33,6 +34,7 @@
   .keyboard--item {
     min-width: 4vmin;
     min-height: 4vmin;
+    font-size: 0.8rem;
   }
 }
 @media screen and (max-width: 500px) {
@@ -41,29 +43,110 @@
     min-height: 3.5vmin;
   }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 400px) {
   .keyboard--item {
     min-width: 3vmin;
     min-height: 3vmin;
   }
-  .keyboard--item [data-keycode=Backspace] {
-    content: "&#8592;";
-  }
 }
 .keyboard--row:first-child .keyboard--item:last-child {
-  width: 13vmin;
+  width: 15vmin;
+}
+@media screen and (max-width: 400px) {
+  .keyboard--row:first-child .keyboard--item:last-child {
+    max-width: 10vmin;
+    font-size: 0.5rem;
+  }
+  .keyboard--row:first-child .keyboard--item:last-child::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    font-size: 0.8rem;
+    background: inherit;
+    border-radius: inherit;
+    content: "←";
+  }
 }
 .keyboard--row:nth-child(2) .keyboard--item:first-child, .keyboard--row:nth-child(2) .keyboard--item:last-child {
-  width: 9vmin;
+  width: 10vmin;
 }
-.keyboard--row:nth-child(3) .keyboard--item:first-child, .keyboard--row:nth-child(3) .keyboard--item:last-child {
-  width: 12vmin;
+.keyboard--row:nth-child(3) .keyboard--item:first-child {
+  width: 15vmin;
+}
+@media screen and (max-width: 400px) {
+  .keyboard--row:nth-child(3) .keyboard--item:first-child {
+    font-size: 0.1rem;
+  }
+  .keyboard--row:nth-child(3) .keyboard--item:first-child::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    font-size: 0.8rem;
+    background: inherit;
+    border-radius: inherit;
+    content: "Caps";
+  }
+}
+.keyboard--row:nth-child(3) .keyboard--item:last-child {
+  width: 10vmin;
 }
 .keyboard--row:nth-child(4) .keyboard--item:first-child {
   width: 15vmin;
 }
+@media screen and (max-width: 650px) {
+  .keyboard--row:nth-child(4) .keyboard--item:first-child {
+    width: 20vmin;
+  }
+}
+@media screen and (max-width: 650px) {
+  .keyboard--row:nth-child(4) .keyboard--item:last-child {
+    font-size: 0.5rem;
+  }
+  .keyboard--row:nth-child(4) .keyboard--item:last-child::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    font-size: 0.8rem;
+    background: inherit;
+    border-radius: inherit;
+    content: "Sh";
+  }
+}
 .keyboard--row:last-child .keyboard--item:nth-child(3) {
-  width: 50vmin;
+  width: 52vmin;
+}
+@media screen and (max-width: 650px) {
+  .keyboard--row:last-child .keyboard--item:nth-child(3) {
+    width: 50vmin;
+  }
+}
+@media screen and (max-width: 450px) {
+  .keyboard--row:last-child .keyboard--item:nth-child(3) {
+    width: 45vmin;
+  }
+}
+@media screen and (max-width: 400px) {
+  .keyboard--row:last-child .keyboard--item:nth-child(3) {
+    width: 40vmin;
+  }
 }
 
 .active {

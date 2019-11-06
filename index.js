@@ -9,3 +9,5 @@ container.classList.add('container');
 container.append(textarea);
 container.append(virtualKeyboard);
 document.body.append(container);
+
+document.addEventListener('DOMContentLoaded', () => textarea.focus());

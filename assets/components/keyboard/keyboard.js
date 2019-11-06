@@ -50,16 +50,24 @@ class Keyboard {
             });
     }
 
-    _toggleActiveClass(e) {
-        if (e.target.classList.contains('keyboard--item')) {
-            const keycode = e.target.dataset.keycode;
+    _setActiveClass({target}) {
+        if (target.classList.contains('keyboard--item')) {
+            const keycode = target.dataset.keycode;
             if (/^CapsLock$/.test(keycode) && this.capsLock) {
-                e.target.classList.toggle('active');
+                target.classList.toggle('active');
             } else {
-                e.target.classList.toggle('active');
+                target.classList.add('active');
             }
         }
+    }
 
+    _removeActiveClass({target}) {
+        if (target.classList.contains('keyboard--item')) {
+            const keycode = target.dataset.keycode;
+            if (!/^CapsLock$/.test(keycode)) {
+                target.classList.remove('active');
+            }
+        }
     }
 
     _useStorage() {
@@ -89,6 +97,12 @@ class Keyboard {
         });
 
         this._lettersUp();
+    }
+
+    _listenerLeave({target, code}) {
+        if (code !== 'ShiftLeft' || code !== 'ShiftRight') {
+            target.addEventListener('mouseleave', e => e.target.classList.remove('active'), {once: true});
+        }
     }
 
     listeners() {
@@ -154,11 +168,12 @@ class Keyboard {
             let indexСarriage = this.textarea.selectionStart;
             let text = this.textarea.value;
 
-            this._toggleActiveClass(e);
+            this._setActiveClass(e);
+            this._listenerLeave(e);
 
             if (e.target.classList.contains('keyboard--item')) {
                 // letter and digit
-                if (key.length < 2) {
+                if (!/^Arrow/.test(keycode) && key.length < 2) {
                     if (e.shiftKey || this.capsLock) {
                         this.textarea.value = [...text.slice(0, indexСarriage), key, ...text.slice(indexСarriage)].join('');
                         this.textarea.selectionEnd = ++indexСarriage;
@@ -174,8 +189,8 @@ class Keyboard {
                     this.textarea.value = [...text.slice(0, indexСarriage), '    ', ...text.slice(indexСarriage)].join('');
                     this.textarea.selectionEnd = indexСarriage + 4;
                 } else if (/^Space$/.test(keycode)) {
-                    this.textarea.value = [...text.slice(0, indexСarriage), ' ', ...text.slice(indexСarriage)].join('');
-                    this.textarea.selectionEnd = ++indexСarriage;
+                    this.textarea.value = [...text.slice(0, indexСarriage-1), ' ', ...text.slice(indexСarriage-1)].join('');
+                    this.textarea.selectionEnd = indexСarriage;
                 } else if (/^Enter$/.test(keycode)) {
                     this.textarea.value = [...text.slice(0, indexСarriage), '\n', ...text.slice(indexСarriage)].join('');
                     this.textarea.selectionEnd = ++indexСarriage;
@@ -189,6 +204,12 @@ class Keyboard {
                     } else {
                         this._lettersDown();
                     }
+                } else if (/^ArrowLeft$/.test(keycode)) {
+                    this.textarea.selectionStart -= 1;
+                    this.textarea.selectionEnd -= 1;
+                } else if (/^ArrowRight$/.test(keycode)) {
+                    this.textarea.selectionEnd += 1;
+                    this.textarea.selectionStart = this.textarea.selectionEnd
                 }
             }
         });
@@ -202,12 +223,11 @@ class Keyboard {
                 this.fill();
             }
 
-            this._toggleActiveClass(e);
+            this._removeActiveClass(e);
             this.textarea.focus();
         });
+
     }
 }
-
-
 
 export default Keyboard;

@@ -51,16 +51,16 @@ const en = {
     'Comma': ',',
     'Period': '.',
     'Slash': '/',
-    'ArrowUp': '<',
+    'ArrowUp': '↑',
     'ShiftRight': 'Shift',
     'ControlLeft': 'Ctrl',
     'AltLeft': 'Alt',
     'Space': ' ',
     'AltRight': 'Alt',
     'ControlRight': 'Ctrl',
-    'ArrowLeft': '<',
-    'ArrowDown': '>',
-    'ArrowRight': '>',
+    'ArrowLeft': '←',
+    'ArrowDown': '↓',
+    'ArrowRight': '→',
 };
 
 const ru = {
@@ -116,16 +116,16 @@ const ru = {
     'Comma': 'б',
     'Period': 'ю',
     'Slash': '.',
-    'ArrowUp': '<',
+    'ArrowUp': '↑',
     'ShiftRight': 'Shift',
     'ControlLeft': 'Ctrl',
     'AltLeft': 'Alt',
     'Space': ' ',
     'AltRight': 'Alt',
     'ControlRight': 'Ctrl',
-    'ArrowLeft': '<',
-    'ArrowDown': '>',
-    'ArrowRight': '>',
+    'ArrowLeft': '←',
+    'ArrowDown': '↓',
+    'ArrowRight': '→',
 };
 
 const languages = { en, ru };
